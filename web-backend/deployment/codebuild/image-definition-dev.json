@@ -1,0 +1,101 @@
+{
+    "containerDefinitions": [
+        {
+            "name": "web-backend",
+            "image": "<web-backend-image>",
+            "cpu": 512,
+            "memory": 1024,
+            "portMappings": [
+                {
+                    "hostPort": 8765,
+                    "protocol": "tcp",
+                    "containerPort": 8765
+                }
+            ],
+            "essential": true,
+            "entryPoint": [
+                "./run-server"
+            ],
+            "environment": [
+                {
+                    "name": "NEWRELIC_APP_NAME",
+                    "value": "Web Backend Dev"
+                },
+                {
+                    "name" : "APP_URL",
+                    "value" : "https://api-dev.examz.pro"
+                },
+                {
+                    "name" : "REDIS_DB",
+                    "value" : "1"
+                },
+                {
+                    "name" : "AWS_BUCKET",
+                    "value" : "examz-test"
+                },
+                {
+                    "name" : "FRONTEND_URL",
+                    "value" : "https://dev.examz.pro"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "DB_USERNAME",
+                    "valueFrom": "/web-backend/dev/DB_USERNAME"
+                },
+                {
+                    "name": "DB_HOST",
+                    "valueFrom": "/web-backend/dev/DB_HOST"
+                },
+                {
+                    "name": "DB_DATABASE",
+                    "valueFrom": "/web-backend/dev/DB_DATABASE"
+                },
+                {
+                    "name": "DB_PASSWORD",
+                    "valueFrom": "/web-backend/dev/DB_PASSWORD"
+                },
+                {
+                    "name": "NEWRELIC_KEY",
+                    "valueFrom": "/web-backend/dev/NEWRELIC_KEY"
+                },
+                {
+                    "name": "APP_KEY",
+                    "valueFrom": "/web-backend/dev/APP_KEY"
+                },
+                {
+                    "name": "GOOGLE_CLIENT_SECRET",
+                    "valueFrom": "/web-backend/dev/GOOGLE_CLIENT_SECRET"
+                }
+            ],
+            "disableNetworking": false,
+            "privileged": false,
+            "readonlyRootFilesystem": false,
+            "dnsServers": [],
+            "dnsSearchDomains": [],
+            "dockerSecurityOptions": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/fargate-task-definition",
+                    "awslogs-region": "ap-south-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        }
+    ],
+    "memory": "1024",
+    "cpu": "512",
+    "networkMode": "awsvpc",
+    "family": "dev-web-backend",
+    "executionRoleArn": "arn:aws:iam::029178759545:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::029178759545:role/prod-web-backend-ecs-task-role",
+    "runtimePlatform": {
+        "operatingSystemFamily": "LINUX"
+    },
+    "requiresCompatibilities": [
+        "FARGATE"
+    ]
+}

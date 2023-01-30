@@ -1,0 +1,107 @@
+{
+    "containerDefinitions": [
+        {
+            "name": "web-backend",
+<<<<<<< HEAD
+            "image": "029178759545.dkr.ecr.ap-south-1.amazonaws.com/web-backend:v0.0",
+            "cpu": 2048,
+            "memory": 4096,
+=======
+            "image": "<web-backend-image>",
+            "cpu": 512,
+            "memory": 1024,
+>>>>>>> 0d0a9d575126560680f8bb2e76de334ac45dd27e
+            "portMappings": [
+                {
+                    "hostPort": 8765,
+                    "protocol": "tcp",
+                    "containerPort": 8765
+                }
+            ],
+            "essential": true,
+            "entryPoint": [
+                "./run-server"
+            ],
+            "environment": [
+                {
+<<<<<<< HEAD
+                    "name": "REDIS_HOST",
+                    "value": "prod-web-backend-0001-001.1lzqvx.0001.aps1.cache.amazonaws.com"
+                },
+                {
+=======
+>>>>>>> 0d0a9d575126560680f8bb2e76de334ac45dd27e
+                    "name": "NEWRELIC_APP_NAME",
+                    "value": "Web Backend Prod"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "DB_USERNAME",
+                    "valueFrom": "/web-backend/prod/DB_USERNAME"
+                },
+                {
+                    "name": "DB_HOST",
+                    "valueFrom": "/web-backend/prod/DB_HOST"
+                },
+                {
+                    "name": "DB_DATABASE",
+                    "valueFrom": "/web-backend/prod/DB_DATABASE"
+                },
+                {
+                    "name": "DB_PASSWORD",
+                    "valueFrom": "/web-backend/prod/DB_PASSWORD"
+                },
+                {
+                    "name": "NEWRELIC_KEY",
+                    "valueFrom": "/web-backend/prod/NEWRELIC_KEY"
+                },
+                {
+                    "name": "APP_KEY",
+                    "valueFrom": "/web-backend/prod/APP_KEY"
+                },
+                {
+                    "name": "GOOGLE_CLIENT_SECRET",
+                    "valueFrom": "/web-backend/prod/GOOGLE_CLIENT_SECRET"
+                }
+            ],
+            "disableNetworking": false,
+            "privileged": false,
+            "readonlyRootFilesystem": false,
+            "dnsServers": [],
+            "dnsSearchDomains": [],
+            "dockerSecurityOptions": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+<<<<<<< HEAD
+                    "awslogs-group": "/ecs/fargate-task-definition",
+=======
+                    "awslogs-group": "/ecs/services",
+>>>>>>> 0d0a9d575126560680f8bb2e76de334ac45dd27e
+                    "awslogs-region": "ap-south-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        }
+    ],
+<<<<<<< HEAD
+    "memory": "4096",
+    "cpu": "2048",
+=======
+    "memory": "1024",
+    "cpu": "512",
+>>>>>>> 0d0a9d575126560680f8bb2e76de334ac45dd27e
+    "networkMode": "awsvpc",
+    "family": "prod-web-backend",
+    "executionRoleArn": "arn:aws:iam::029178759545:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::029178759545:role/prod-web-backend-ecs-task-role",
+    "runtimePlatform": {
+        "operatingSystemFamily": "LINUX"
+    },
+    "requiresCompatibilities": [
+        "FARGATE"
+    ]
+}

@@ -1,0 +1,7 @@
+vendor/
+db/
+Makefile
+Procfile
+phpunit.xml
+tests
+*Dockerfile

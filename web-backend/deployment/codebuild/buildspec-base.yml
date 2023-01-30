@@ -1,0 +1,26 @@
+version: 0.2
+env:
+  variables:
+    ECR_REPO_LINK: "029178759545.dkr.ecr.ap-south-1.amazonaws.com/web-backend-base"
+    IMAGE_TAG: v1
+
+phases:
+  install:
+    on-failure: ABORT
+    commands:
+      - echo "$(date) Staring"
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin $ECR_REPO_LINK
+      - echo "$(date) ECR login done"
+  build:
+    on-failure: ABORT
+    commands:
+      - echo "$(date) Building image"
+      - make ecr-build-base
+      - echo "$(date) Build success)"
+      - docker tag web-backend-base:latest ${ECR_REPO_LINK}:${IMAGE_TAG}
+      - docker push ${ECR_REPO_LINK}:${IMAGE_TAG}
+      - echo "$(date) Docker push done"
+  post_build:
+    on-failure: ABORT
+    commands:
+      - echo "$(date) Successfully build"

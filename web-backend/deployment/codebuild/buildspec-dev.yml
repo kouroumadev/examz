@@ -1,0 +1,44 @@
+version: 0.2
+env:
+  variables:
+    GITHUB_REPO_NAME: "web-backend"
+    APP_ENV: "dev"
+    ECR_REPO_LINK: "029178759545.dkr.ecr.ap-south-1.amazonaws.com/web-backend-dev"
+  parameter-store:
+    DB_USERNAME: "/web-backend/dev/DB_USERNAME"
+    DB_PASSWORD: "/web-backend/dev/DB_PASSWORD"
+    DB_HOST: "/web-backend/dev/DB_HOST"
+    DB_DATABASE: "/web-backend/dev/DB_DATABASE"
+    GITHUB_BOT_PAC: "/github/BOT_PASSWORD"
+    GITHUB_BOT_USERNAME: "/github/BOT_USERNAME"
+
+phases:
+  install:
+    on-failure: ABORT
+    commands:
+      - echo "$(date) Staring"
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin $ECR_REPO_LINK
+      - echo "$(date) ECR login done"
+  pre_build:
+    on-failure: ABORT
+    commands:
+      - export IMAGE_TAG=$CODEBUILD_RESOLVED_SOURCE_VERSION
+  build:
+    on-failure: ABORT
+    commands:
+      - echo "$(date) Building image"
+      - make ecr-build
+      - echo "$(date) Build success)"
+      - docker tag web-backend:latest ${ECR_REPO_LINK}:${IMAGE_TAG}
+      - docker push ${ECR_REPO_LINK}:${IMAGE_TAG}
+      - echo "$(date) Docker push done"
+  post_build:
+    on-failure: ABORT
+    commands:
+      - echo "$(date) Successfully build"
+      - cd $CODEBUILD_SRC_DIR
+      - make migrate
+      - echo "$(date) Migrated successfully"
+      - sed -i "s#<web-backend-image>#$ECR_REPO_LINK:$IMAGE_TAG#" deployment/codebuild/image-definition-dev.json
+      - make ecs-deploy-dev
+      - echo "$(date) Deployed successfully"

@@ -1,0 +1,54 @@
+version: 0.2
+env:
+  variables:
+    GITHUB_REPO_NAME: "web-backend"
+    APP_ENV: "production"
+    ECR_REPO_LINK: "029178759545.dkr.ecr.ap-south-1.amazonaws.com/web-backend"
+  parameter-store:
+<<<<<<< HEAD
+    DB_USERNAME: "/web-backend/prod/DB_MIGRATE_USERNAME"
+    DB_PASSWORD: "/web-backend/prod/DB_MIGRATE_PASSWORD"
+=======
+    DB_USERNAME: "/web-backend/prod/DB_USERNAME"
+    DB_PASSWORD: "/web-backend/prod/DB_PASSWORD"
+>>>>>>> 0d0a9d575126560680f8bb2e76de334ac45dd27e
+    DB_HOST: "/web-backend/prod/DB_HOST"
+    DB_DATABASE: "/web-backend/prod/DB_DATABASE"
+    GITHUB_BOT_PAC: "/github/BOT_PASSWORD"
+    GITHUB_BOT_USERNAME: "/github/BOT_USERNAME"
+
+phases:
+  install:
+    on-failure: ABORT
+    commands:
+      - echo "$(date) Staring"
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin $ECR_REPO_LINK
+      - echo "$(date) ECR login done"
+  pre_build:
+    on-failure: ABORT
+    commands:
+<<<<<<< HEAD
+      - |
+        export IMAGE_TAG=$(curl -s -H "Authorization: token $GITHUB_BOT_PAC" -H "Accept: application:vnd.github.v3+json" https://api.github.com/repos/ExamzPro/$GITHUB_REPO_NAME/releases/latest | jq -r '.tag_name')
+=======
+      - export IMAGE_TAG=$CODEBUILD_RESOLVED_SOURCE_VERSION
+>>>>>>> 0d0a9d575126560680f8bb2e76de334ac45dd27e
+  build:
+    on-failure: ABORT
+    commands:
+      - echo "$(date) Building image"
+      - make ecr-build
+      - echo "$(date) Build success)"
+      - docker tag web-backend:latest ${ECR_REPO_LINK}:${IMAGE_TAG}
+      - docker push ${ECR_REPO_LINK}:${IMAGE_TAG}
+      - echo "$(date) Docker push done"
+  post_build:
+    on-failure: ABORT
+    commands:
+      - echo "$(date) Successfully build"
+      - cd $CODEBUILD_SRC_DIR
+      - make migrate
+      - echo "$(date) Migrated successfully"
+      - sed -i "s#<web-backend-image>#$ECR_REPO_LINK:$IMAGE_TAG#" deployment/codebuild/image-definition.json
+      - make ecs-deploy
+      - echo "$(date) Deployed successfully"

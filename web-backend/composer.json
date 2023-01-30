@@ -1,0 +1,94 @@
+{
+    "name": "laravel/laravel",
+    "type": "project",
+    "description": "The Laravel Framework.",
+    "keywords": ["framework", "laravel"],
+    "license": "MIT",
+    "require": {
+<<<<<<< HEAD
+        "php": "8.1.11",
+        "aws/aws-sdk-php": "^3.239",
+=======
+        "php": "8.1.12",
+        "aws/aws-sdk-php": "^3.239",
+        "doctrine/dbal": "^3.5",
+>>>>>>> 0d0a9d575126560680f8bb2e76de334ac45dd27e
+        "fruitcake/laravel-cors": "^2.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "laravel/framework": "^8.65",
+        "laravel/sanctum": "^2.11",
+        "laravel/socialite": "^5.2",
+        "laravel/tinker": "^2.5",
+<<<<<<< HEAD
+        "league/flysystem-aws-s3-v3": "~1.0",
+=======
+        "league/flysystem-aws-s3-v3": "^1.0",
+>>>>>>> 0d0a9d575126560680f8bb2e76de334ac45dd27e
+        "spatie/laravel-permission": "^5.4",
+        "spatie/laravel-short-schedule": "^1.4",
+        "staudenmeir/belongs-to-through": "^2.5",
+        "staudenmeir/eloquent-has-many-deep": "^1.7",
+        "tymon/jwt-auth": "dev-develop"
+    },
+    "require-dev": {
+<<<<<<< HEAD
+=======
+        "barryvdh/laravel-ide-helper": "^2.12",
+>>>>>>> 0d0a9d575126560680f8bb2e76de334ac45dd27e
+        "facade/ignition": "^2.5",
+        "fakerphp/faker": "^1.9.1",
+        "laravel/sail": "^1.0.1",
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^5.10",
+        "phpunit/phpunit": "^9.5.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+<<<<<<< HEAD
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump"
+=======
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+>>>>>>> 0d0a9d575126560680f8bb2e76de334ac45dd27e
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
+        ]
+    },
+    "extra": {
+        "laravel": {
+<<<<<<< HEAD
+            "dont-discover": []
+=======
+            "dont-discover": [
+                "barryvdh/laravel-ide-helper"
+            ]
+>>>>>>> 0d0a9d575126560680f8bb2e76de334ac45dd27e
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
